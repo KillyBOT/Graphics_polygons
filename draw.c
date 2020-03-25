@@ -48,11 +48,15 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
     printf("Error! Need 1 or more triangles!\n");
   }
 
+  double* n;
+  double v[3] = {0,0,1};
+
+
   for(int i = 0; i < polygons->lastcol-2; i+=3){
 
-    double* n = calculate_normal(polygons, i);
+    n = calculate_normal(polygons, i);
 
-    if(n[2] > 0){
+    if(dot_product(n,v) > 0){
       draw_line(polygons->m[0][i],polygons->m[1][i],polygons->m[0][i+1],polygons->m[1][i+1],s,c);
       draw_line(polygons->m[0][i+1],polygons->m[1][i+1],polygons->m[0][i+2],polygons->m[1][i+2],s,c);
       draw_line(polygons->m[0][i+2],polygons->m[1][i+2],polygons->m[0][i],polygons->m[1][i],s,c);
@@ -60,6 +64,7 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
     
     free(n);
   }
+
 }
 
 /*======== void add_box() ==========
@@ -116,11 +121,11 @@ void add_box( struct matrix * edges,
   add_polygon(edges, x0, y0, z1, x0, y1, z1, x0, y0, z0);
   add_polygon(edges, x0, y0, z0, x0, y1, z1, x0, y1, z0);
 
-  add_polygon(edges, x1, y0, z1, x0, y0, z1, x1, y0, z0);
-  add_polygon(edges, x1, y0, z0, x0, y0, z1, x0, y0, z0);
+  add_polygon(edges, x0, y0, z1, x0, y0, z0, x1, y0, z1);
+  add_polygon(edges, x1, y0, z1, x0, y0, z0, x1, y0, z0);
 
-  add_polygon(edges, x0, y1, z1, x1, y1, z1, x0, y1, z0);
-  add_polygon(edges, x0, y1, z0, x1, y1, z1, x1, y1, z0);
+  add_polygon(edges, x1, y1, z1, x1, y1, z0, x0, y1, z1);
+  add_polygon(edges, x0, y1, z1, x1, y1, z0, x0, y1, z0);
 
 }
 
