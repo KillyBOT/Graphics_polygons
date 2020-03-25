@@ -232,12 +232,12 @@ void add_sphere( struct matrix * edges,
 struct matrix * generate_sphere(double cx, double cy, double cz,
                                 double r, int steps ) {
 
-  struct matrix *points = new_matrix(4, steps * steps);
+  struct matrix *points = new_matrix(4, (steps+1) * steps);
   int circle, rotation, rot_start, rot_stop, circ_start, circ_stop;
   double x, y, z, rot, circ;
 
   rot_start = 0;
-  rot_stop = steps;
+  rot_stop = steps+1;
   circ_start = 0;
   circ_stop = steps;
 
@@ -253,21 +253,11 @@ struct matrix * generate_sphere(double cx, double cy, double cz,
       z = r * sin(M_PI * circ) *
         sin(2*M_PI * rot) + cz;
 
-      /* printf("rotation: %d\tcircle: %d\n", rotation, circle); */
-      /* printf("rot: %lf\tcirc: %lf\n", rot, circ); */
-      /* printf("sphere point: (%0.2f, %0.2f, %0.2f)\n\n", x, y, z); */
+      // printf("rotation: %d\tcircle: %d\n", rotation, circle);
+      // printf("rot: %lf\tcirc: %lf\n", rot, circ);
+      // printf("sphere point: (%0.2f, %0.2f, %0.2f)\n\n", x, y, z);
       add_point(points, x, y, z);
     }
-  }
-
-  for(circle = circ_start; circle <= circ_stop; circle++){
-    circ = (double)circle / steps;
-
-    x = r * cos(M_PI * circ) + cx;
-    y = r * sin(M_PI * circ) + cy;
-    z = cz;
-
-    add_point(points, x, y, z);
   }
 
   return points;
@@ -296,9 +286,9 @@ void add_torus( struct matrix * edges,
   int index, lat, longt;
   int latStop, longStop, latStart, longStart;
   latStart = 0;
-  latStop = steps;
+  latStop = steps+1;
   longStart = 0;
-  longStop = steps;
+  longStop = steps+1;
 
   for ( lat = latStart; lat < latStop; lat++ ) {
     for ( longt = longStart; longt < longStop; longt++ ) {
@@ -343,14 +333,14 @@ void add_torus( struct matrix * edges,
 struct matrix * generate_torus( double cx, double cy, double cz,
                                 double r1, double r2, int steps ) {
 
-  struct matrix *points = new_matrix(4, steps * steps);
+  struct matrix *points = new_matrix(4, (steps+1) * (steps+1));
   int circle, rotation, rot_start, rot_stop, circ_start, circ_stop;
   double x, y, z, rot, circ;
 
   rot_start = 0;
-  rot_stop = steps;
+  rot_stop = steps+1;
   circ_start = 0;
-  circ_stop = steps;
+  circ_stop = steps+1;
 
   for (rotation = rot_start; rotation < rot_stop; rotation++) {
     rot = (double)rotation / steps;
@@ -370,17 +360,8 @@ struct matrix * generate_torus( double cx, double cy, double cz,
     }
   }
 
-  for(circle = circ_start; circle < circ_stop; circle++){
-      circ = (double)circle / steps;
+  //print_matrix(points);
 
-      x = (r1 * cos(2*M_PI * circ) + r2) + cx;
-      y = r1 * sin(2*M_PI * circ) + cy;
-      z = cz;
-
-      //printf("rotation: %d\tcircle: %d\n", rotation, circle);
-      //printf("torus point: (%0.2f, %0.2f, %0.2f)\n", x, y, z);
-      add_point(points, x, y, z);
-    }
   return points;
 }
 
@@ -525,14 +506,6 @@ void draw_lines( struct matrix * points, screen s, color c) {
 	      points->m[1][point+1],
 	      s, c);	       
 }// end draw_lines
-
-
-
-
-
-
-
-
 
 void draw_line(int x0, int y0, int x1, int y1, screen s, color c) {
   
