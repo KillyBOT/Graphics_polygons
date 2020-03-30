@@ -51,12 +51,12 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
   double* n;
   double v[3] = {0,0,1};
 
-
   for(int i = 0; i < polygons->lastcol-2; i+=3){
 
     n = calculate_normal(polygons, i);
 
     if(dot_product(n,v) > 0){
+      //printf("%lf\n", dot_product(n,v));
       draw_line(polygons->m[0][i],polygons->m[1][i],polygons->m[0][i+1],polygons->m[1][i+1],s,c);
       draw_line(polygons->m[0][i+1],polygons->m[1][i+1],polygons->m[0][i+2],polygons->m[1][i+2],s,c);
       draw_line(polygons->m[0][i+2],polygons->m[1][i+2],polygons->m[0][i],polygons->m[1][i],s,c);
